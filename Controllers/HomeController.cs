@@ -6,11 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BuildWebAPPFromConsole.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : Controller// For MVC inherit by Controller for Web API Controller hinherit by BaseController class
     {
-        public string Index()
+        public IActionResult Index()
         {
-            return "Index";
+            return View();
         }
     }
 }
