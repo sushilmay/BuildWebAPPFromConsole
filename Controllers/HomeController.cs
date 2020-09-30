@@ -16,6 +16,9 @@ namespace BuildWebAPPFromConsole.Controllers
         {
             return View();
         }
-
+        public ViewResult Contactus()
+        {
+            return View();
+        }
     }
 }

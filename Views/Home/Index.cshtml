@@ -1,20 +1,16 @@
-﻿<html>
-<head>
+﻿@{
+    Layout = "_Layout";
+}
+<div class="container">
     <h1>Home</h1>
-    <link href="~/lib/twitter-bootstrap/css/bootstrap.css" rel="stylesheet" />
-
-</head>
-<body class="container">
     <!--We have to the configure middleware UseStaticFiles  then only it will show the images from wwwroot folder-->
     <img src="~/images/logo.png" alt="logo" style="width:100px;height:100px;" />
 
     <img src="../MyStaticFiles/logo.png" alt="logo1" style="width:100px;height:100px;" />
 
-    <button type="button" class="btn btn-primary"
+    <button type="button" class="btn btn-primary">Click me</button>
+</div>
 
-</body>
-
-</html>
 <script src="~/lib/jquery/jquery.js"></script>
 <script>
     $(document).ready(function () {
