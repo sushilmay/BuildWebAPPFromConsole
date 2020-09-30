@@ -23,9 +23,9 @@ namespace BuildWebAPPFromConsole
             //Antiforgery,Tempdata,Views,taghelper, memorycache do not have in AddControllers but other three have
             //Pages do not have in AddControllers AddControllersWithViews, but other two have
 
-            //services.AddMvc();          //MVC will use this
+            //services.AddMvc();  //MVC will use this
 
-            services.AddControllersWithViews();          //MVC will use this
+            services.AddControllersWithViews();  //MVC will use this
 
             //like for web api may use this one
             //services.AddControllers();  
