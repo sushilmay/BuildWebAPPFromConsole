@@ -16,6 +16,8 @@ namespace BuildWebAPPFromConsole
 
         public void ConfigureServices(IServiceCollection services)
         {
+            //AddMVC() vs AddControllersWithViews() vs AddControllers() vs AddRazorPages()
+
             //this method is used to add mvc in 3.0.1 version there are some more methods see commented below
 
             //Controllers,Model binding, Autherization, Validatons has in AddMvc,AddControllersWithViews,AddControllers,AddRazorPages
