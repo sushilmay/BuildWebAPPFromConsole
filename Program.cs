@@ -14,8 +14,7 @@ namespace BuildWebAPPFromConsole
         public static IHostBuilder CreateHostBuilder(string[] args) =>
 
             Host.CreateDefaultBuilder(args).ConfigureWebHostDefaults(webBuilder => {
-                webBuilder.UseStartup<StartupCustomMiddleware>();
-                //webBuilder.UseStartup<Startup>();
+                webBuilder.UseStartup<Startup>();
             });
     }
 }

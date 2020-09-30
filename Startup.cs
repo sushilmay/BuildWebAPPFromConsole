@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +26,11 @@ namespace BuildWebAPPFromConsole
         /// <param name="env"></param>
         public void Configure(IApplicationBuilder app,IWebHostEnvironment env)
         {
+            //here env variable read it form launchSetting.json file and as we know launchsetting only used for development
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
             app.UseRouting();
 
             app.UseEndpoints(endpoints=> {
@@ -32,7 +38,7 @@ namespace BuildWebAPPFromConsole
                 //Diff  Map Vs MapGet is MapGet only use get request where Map may use get put and post etc.
                 endpoints.MapGet("/", async context =>
                 {
-                    await context.Response.WriteAsync("Running Web Server");
+                    await context.Response.WriteAsync("Running Web Server"+ env.EnvironmentName);
                 });
             });
         }
