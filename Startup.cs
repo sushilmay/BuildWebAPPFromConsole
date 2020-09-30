@@ -13,7 +13,7 @@ namespace BuildWebAPPFromConsole
     public class Startup
     {
 
-        public void ConfigurationServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services)
         {
 
         }
