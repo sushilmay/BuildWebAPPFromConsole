@@ -8,9 +8,14 @@ namespace BuildWebAPPFromConsole.Controllers
 {
     public class HomeController : Controller// For MVC inherit by Controller for Web API Controller hinherit by BaseController class
     {
-        public IActionResult Index()
+        public ViewResult Index()
         {
             return View();
         }
+        public ViewResult Aboutus()
+        {
+            return View();
+        }
+
     }
 }
