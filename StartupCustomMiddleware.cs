@@ -11,7 +11,7 @@ namespace BuildWebAPPFromConsole
 {
     public class StartupCustomMiddleware
     {
-        public void ConfigurationServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services)
         {
 
         }
