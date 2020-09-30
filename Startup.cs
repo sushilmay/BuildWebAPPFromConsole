@@ -17,12 +17,20 @@ namespace BuildWebAPPFromConsole
         public void ConfigureServices(IServiceCollection services)
         {
             //this method is used to add mvc in 3.0.1 version there are some more methods see commented below
-            //services.AddMvc();
-            
+
+            //Controllers,Model binding, Autherization, Validatons has in AddMvc,AddControllersWithViews,AddControllers,AddRazorPages
+            //API Explorer, CORS, FormatterMapping  do not have in AddRazorPages but other three have
+            //Antiforgery,Tempdata,Views,taghelper, memorycache do not have in AddControllers but other three have
+            //Pages do not have in AddControllers AddControllersWithViews, but other two have
+
+            //services.AddMvc();          //MVC will use this
+
+            services.AddControllersWithViews();          //MVC will use this
+
             //like for web api may use this one
             //services.AddControllers();  
-
-            services.AddControllersWithViews();
+            //razorpages will use this one
+            //services.AddRazorPages();
         }
 
         /// <summary>
