@@ -35,6 +35,9 @@ namespace BuildWebAPPFromConsole
             //services.AddControllers();  
             //razorpages will use this one
             //services.AddRazorPages();
+#if DEBUG
+            services.AddRazorPages().AddRazorRuntimeCompilation();
+#endif
         }
 
         /// <summary>
