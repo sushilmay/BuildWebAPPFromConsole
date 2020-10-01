@@ -48,12 +48,18 @@ namespace BuildWebAPPFromConsole.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (bookModel.TotalPages == null || bookModel.TotalPages<=0)
+                {
+                    ModelState.AddModelError("", "Total Pages must be greater than 0;");
+                    return View();
+                }
                 int id = await _bookRepository.AddNewBook(bookModel);
                 if (id > 0)
-                {
+                { 
                     return RedirectToAction(nameof(AddNewBook), new { isSuccess = true, bookId = id });
                 }
             }
+
             return View();
         }
     }
