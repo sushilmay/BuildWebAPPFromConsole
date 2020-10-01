@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using BuildWebAPPFromConsole.Model;
 using BuildWebAPPFromConsole.Repository;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace BuildWebAPPFromConsole.Controllers
 {
@@ -37,15 +38,20 @@ namespace BuildWebAPPFromConsole.Controllers
         }
         public ViewResult AddNewBook(bool isSuccess = false, int bookId = 0)
         {
+            var model = new BookModel() { Language = "English" };
+            ViewBag.Language = new SelectList(new List<string>() { "Hindi", "English", "Dutch" });
+
             ViewBag.IsSuccess = isSuccess;
             ViewBag.BookId = bookId;
 
-            return View();
+            return View(model);
         }
 
         [HttpPost]
         public async Task<IActionResult> AddNewBook(BookModel bookModel)
         {
+            ViewBag.Language = new SelectList(new List<string>() { "Hindi", "English", "Dutch" });
+
             if (ModelState.IsValid)
             {
                 if (bookModel.TotalPages == null || bookModel.TotalPages<=0)
