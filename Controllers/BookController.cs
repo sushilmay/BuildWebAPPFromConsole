@@ -38,8 +38,8 @@ namespace BuildWebAPPFromConsole.Controllers
         }
         public ViewResult AddNewBook(bool isSuccess = false, int bookId = 0)
         {
-            var model = new BookModel() { Language = "English" };
-            ViewBag.Language = new SelectList(new List<string>() { "Hindi", "English", "Dutch" });
+            var model = new BookModel() { Language = "2" };
+            ViewBag.Language = new SelectList(GetLanguage(), "Id", "Text");
 
             ViewBag.IsSuccess = isSuccess;
             ViewBag.BookId = bookId;
@@ -50,7 +50,7 @@ namespace BuildWebAPPFromConsole.Controllers
         [HttpPost]
         public async Task<IActionResult> AddNewBook(BookModel bookModel)
         {
-            ViewBag.Language = new SelectList(new List<string>() { "Hindi", "English", "Dutch" });
+            ViewBag.Language = new SelectList(GetLanguage(),"Id","Text");
 
             if (ModelState.IsValid)
             {
@@ -67,6 +67,16 @@ namespace BuildWebAPPFromConsole.Controllers
             }
 
             return View();
+        }
+
+        private List<LanguageModel> GetLanguage()
+        {
+            return new List<LanguageModel>()
+            {
+                new LanguageModel(){ Id = 1, Text = "Hindi"},
+                new LanguageModel(){ Id = 2, Text = "English"},
+                new LanguageModel(){ Id = 3, Text = "Dutch"},
+            };
         }
     }
 }
