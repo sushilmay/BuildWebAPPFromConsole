@@ -341,3 +341,4 @@ healthchecksdb
 /wwwroot/lib
 /wwwroot/jquery-validate
 /wwwroot/jquery-validation-unobtrusive
+/wwwroot/books/cover
