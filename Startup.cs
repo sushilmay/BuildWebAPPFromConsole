@@ -44,6 +44,7 @@ namespace BuildWebAPPFromConsole
                 services.AddRazorPages().AddRazorRuntimeCompilation();
             #endif
             services.AddScoped<BookRepository, BookRepository>();
+            services.AddScoped<LanguageRepository, LanguageRepository>();
 
 
         }

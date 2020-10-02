@@ -13,10 +13,11 @@ namespace BuildWebAPPFromConsole.Controllers
     public class BookController : Controller
     {
         private readonly BookRepository _bookRepository = null;
-
-        public BookController(BookRepository bookRepository)
+        private readonly LanguageRepository _languageRepository = null;
+        public BookController(BookRepository bookRepository,LanguageRepository languageRepository)
         {
             _bookRepository = bookRepository;
+            _languageRepository = languageRepository;
         }
 
         public async Task<ViewResult> GetAllBooks()
@@ -36,25 +37,11 @@ namespace BuildWebAPPFromConsole.Controllers
         {
             return _bookRepository.SearchBook(bookName, authorName);
         }
-        public ViewResult AddNewBook(bool isSuccess = false, int bookId = 0)
+        public async Task<ViewResult> AddNewBook(bool isSuccess = false, int bookId = 0)
         {
-            var model = new BookModel() { 
-                Language = "2"
-            };
+            var model = new BookModel() ;
 
-            var group1 = new SelectListGroup() { Name = "Group 1" };
-            var group2 = new SelectListGroup() { Name = "Group 2", Disabled = true };
-            var group3 = new SelectListGroup() { Name = "Group 3" };
-
-            ViewBag.Language = new List<SelectListItem>()
-            {
-                new SelectListItem(){Text = "Hindi", Value = "1", Group = group1 },
-                new SelectListItem(){Text = "English", Value = "2", Group = group1 },
-                new SelectListItem(){Text = "Dutch", Value = "3", Group = group2},
-                new SelectListItem(){Text = "Tamil", Value = "4", Group = group2 },
-                new SelectListItem(){Text = "Urdu", Value = "5" , Group = group3},
-                new SelectListItem(){Text = "Chinese", Value = "6", Group = group3 },
-            };
+            ViewBag.Language = new SelectList(await _languageRepository.GetLanguages(),"Id","Name");
             ViewBag.IsSuccess = isSuccess;
             ViewBag.BookId = bookId;
 
@@ -64,19 +51,7 @@ namespace BuildWebAPPFromConsole.Controllers
         [HttpPost]
         public async Task<IActionResult> AddNewBook(BookModel bookModel)
         {
-            var group1 = new SelectListGroup() { Name = "Group 1" };
-            var group2 = new SelectListGroup() { Name = "Group 2", Disabled = true };
-            var group3 = new SelectListGroup() { Name = "Group 3" };
-
-            ViewBag.Language = new List<SelectListItem>()
-            {
-                new SelectListItem(){Text = "Hindi", Value = "1", Group = group1 },
-                new SelectListItem(){Text = "English", Value = "2", Group = group1 },
-                new SelectListItem(){Text = "Dutch", Value = "3", Group = group2},
-                new SelectListItem(){Text = "Tamil", Value = "4", Group = group2 },
-                new SelectListItem(){Text = "Urdu", Value = "5" , Group = group3},
-                new SelectListItem(){Text = "Chinese", Value = "6", Group = group3 },
-            };
+            ViewBag.Language = new SelectList(await _languageRepository.GetLanguages(), "Id", "Name");
 
             if (ModelState.IsValid)
             {
@@ -95,14 +70,5 @@ namespace BuildWebAPPFromConsole.Controllers
             return View();
         }
 
-        private List<LanguageModel> GetLanguage()
-        {
-            return new List<LanguageModel>()
-            {
-                new LanguageModel(){ Id = 1, Text = "Hindi"},
-                new LanguageModel(){ Id = 2, Text = "English"},
-                new LanguageModel(){ Id = 3, Text = "Dutch"},
-            };
-        }
     }
 }
