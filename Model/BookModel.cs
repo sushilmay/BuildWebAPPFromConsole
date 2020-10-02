@@ -31,5 +31,12 @@ namespace BuildWebAPPFromConsole.Model
         public IFormFile CoverPhoto { get; set; }
         public string CoverImageUrl { get; set; }
 
+        [Display(Name = "Choose the gallery images of your book")]
+        [Required]
+        public IFormFileCollection GalleryFiles { get; set; }
+
+        public List<GalleryModel> Gallery { get; set; }
+
+
     }
 }

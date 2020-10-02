@@ -15,6 +15,8 @@ namespace BuildWebAPPFromConsole.Data
                 
         }
         public DbSet<Books> Books { get; set; }
+        public DbSet<BookGallery> BookGallery { get; set; }
+
         public DbSet<Language> language{ get; set; }
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         //{
