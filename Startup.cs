@@ -21,7 +21,7 @@ namespace BuildWebAPPFromConsole
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<BookStoreContext>(options=> options.UseSqlServer("Server=tcp:dev007.database.windows.net,1433;Initial Catalog=dev007;Persist Security Info=False;User ID=dev007;Password=Poiuy@12345*;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"));
+            services.AddDbContext<BookStoreContext>(options=> options.UseSqlServer("Server=tcp:dev007.database.windows.net,1433;Initial Catalog=dev007;Persist Security Info=False;User ID=dev007;Password=;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"));
             
             //AddMVC() vs AddControllersWithViews() vs AddControllers() vs AddRazorPages()
 
@@ -41,10 +41,8 @@ namespace BuildWebAPPFromConsole
             //razorpages will use this one
             //services.AddRazorPages();
             #if DEBUG
-            
-            services.AddRazorPages().AddRazorRuntimeCompilation()
-                .AddViewOptions(option=> {option.HtmlHelperOptions.ClientValidationEnabled = false; });// Uncomment this code to disable client side validations.
-#endif
+                services.AddRazorPages().AddRazorRuntimeCompilation();
+            #endif
             services.AddScoped<BookRepository, BookRepository>();
             services.AddScoped<LanguageRepository, LanguageRepository>();
 
