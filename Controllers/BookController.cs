@@ -87,8 +87,12 @@ namespace BuildWebAPPFromConsole.Controllers
                         bookModel.Gallery.Add(gallery);
                     }
                 }
-
-                int id = await _bookRepository.AddNewBook(bookModel);
+                if (bookModel.BookPdf != null)
+                {
+                    string folder = "books/pdf/";
+                    bookModel.BookPdfUrl = await UploadImage(folder, bookModel.BookPdf);
+                }
+                    int id = await _bookRepository.AddNewBook(bookModel);
                 if (id > 0)
                 { 
                     return RedirectToAction(nameof(AddNewBook), new { isSuccess = true, bookId = id });

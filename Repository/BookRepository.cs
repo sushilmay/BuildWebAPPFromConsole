@@ -27,7 +27,8 @@ namespace BuildWebAPPFromConsole.Repository
                 LanguageId = model.LanguageId,
                 TotalPages = model.TotalPages.HasValue ? model.TotalPages.Value : 0,
                 UpdatedOn = DateTime.UtcNow,
-                CoverImageUrl=model.CoverImageUrl
+                CoverImageUrl=model.CoverImageUrl,
+                BookPdfUrl = model.BookPdfUrl
             };
             newBook.bookGallery = new List<BookGallery>();
 
@@ -58,6 +59,7 @@ namespace BuildWebAPPFromConsole.Repository
                                   Title = book.Title,
                                   TotalPages = book.TotalPages,
                                   CoverImageUrl=book.CoverImageUrl,
+                                  BookPdfUrl = book.BookPdfUrl,
                                   Gallery = book.bookGallery.Select(g => new GalleryModel()
                                   {
                                       Id = g.Id,
@@ -82,6 +84,7 @@ namespace BuildWebAPPFromConsole.Repository
                      Title = book.Title,
                      TotalPages = book.TotalPages,
                      CoverImageUrl=book.CoverImageUrl,
+                     BookPdfUrl = book.BookPdfUrl,
                      Gallery = book.bookGallery.Select(g => new GalleryModel()
                      {
                          Id = g.Id,

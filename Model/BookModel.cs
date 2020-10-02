@@ -38,5 +38,10 @@ namespace BuildWebAPPFromConsole.Model
         public List<GalleryModel> Gallery { get; set; }
 
 
+        [Display(Name = "Upload your book in pdf format")]
+        [Required]
+        public IFormFile BookPdf { get; set; }
+        public string BookPdfUrl { get; set; }
+
     }
 }
