@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BuildWebAPPFromConsole.Helpers
 {
-    public class CutomEmailTagHelper : TagHelper
+    public class CustomEmailTagHelper : TagHelper
     {
         public string MyEmail { get; set; }
         public override void Process(TagHelperContext context, TagHelperOutput output)
@@ -14,7 +14,7 @@ namespace BuildWebAPPFromConsole.Helpers
             output.TagName = "a";
             output.Attributes.SetAttribute("href", $"mailto:{MyEmail}");
             output.Attributes.Add("id", "my-email-id");
-            output.Content.SetContent("my-email");
+            output.Content.SetContent($"contactus:{MyEmail}");
 
         }
     }
