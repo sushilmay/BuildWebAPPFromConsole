@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
@@ -18,10 +19,15 @@ namespace BuildWebAPPFromConsole
 {
     public class Startup
     {
+        private readonly IConfiguration _configuration;
 
+        public Startup(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<BookStoreContext>(options=> options.UseSqlServer("Server=tcp:dev007.database.windows.net,1433;Initial Catalog=dev007;Persist Security Info=False;User ID=dev007;Password=S;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"));
+            services.AddDbContext<BookStoreContext>(options=> options.UseSqlServer(_configuration.GetConnectionString("DefaultConnection")));
             
             //AddMVC() vs AddControllersWithViews() vs AddControllers() vs AddRazorPages()
 
