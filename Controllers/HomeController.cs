@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using BuildWebAPPFromConsole.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 
 namespace BuildWebAPPFromConsole.Controllers
 {
@@ -12,10 +13,14 @@ namespace BuildWebAPPFromConsole.Controllers
     {
         private readonly IConfiguration _configuration;
 
-        public HomeController(IConfiguration configuration)
+        public readonly NewBookAlertConfig _newBookAlertConfig;
+        public HomeController(IConfiguration configuration, IOptions<NewBookAlertConfig> configurationNewBookAlert)
         {
             _configuration = configuration;
+            _newBookAlertConfig = configurationNewBookAlert.Value;
         }
+
+
         public ViewResult Index()
         {
             var newBookAlert = new NewBookAlertConfig();

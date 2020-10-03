@@ -1,4 +1,5 @@
 ﻿using BuildWebAPPFromConsole.Data;
+using BuildWebAPPFromConsole.Model;
 using BuildWebAPPFromConsole.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -57,6 +58,8 @@ namespace BuildWebAPPFromConsole
             services.AddScoped<IBookRepository, BookRepository>();
             services.AddScoped<ILanguageRepository, LanguageRepository>();
 
+
+            services.Configure<NewBookAlertConfig>(_configuration.GetSection("NewBookAlert"));
 
         }
 
