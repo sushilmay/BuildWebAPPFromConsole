@@ -33,6 +33,16 @@ namespace BuildWebAPPFromConsole
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<BookStoreContext>();
+
+            services.Configure<IdentityOptions>(options =>
+            {
+                options.Password.RequiredLength = 5;
+                options.Password.RequiredUniqueChars = 1;
+                options.Password.RequireDigit = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+            });
             //AddMVC() vs AddControllersWithViews() vs AddControllers() vs AddRazorPages()
 
             //this method is used to add mvc in 3.0.1 version there are some more methods see commented below
