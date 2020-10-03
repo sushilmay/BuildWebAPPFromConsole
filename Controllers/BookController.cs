@@ -6,6 +6,7 @@ using System.Runtime.InteropServices.ComTypes;
 using System.Threading.Tasks;
 using BuildWebAPPFromConsole.Model;
 using BuildWebAPPFromConsole.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -25,6 +26,7 @@ namespace BuildWebAPPFromConsole.Controllers
             _webHostEnvironment = webHostEnvironment;
         }
 
+        [Authorize]
         public async Task<ViewResult> GetAllBooks()
         {
             var data= await _bookRepository.GetAllBooks();
@@ -42,6 +44,7 @@ namespace BuildWebAPPFromConsole.Controllers
         {
             return _bookRepository.SearchBook(bookName, authorName);
         }
+        [Authorize]
         public ViewResult AddNewBook(bool isSuccess = false, int bookId = 0)
         {
             var model = new BookModel() ;

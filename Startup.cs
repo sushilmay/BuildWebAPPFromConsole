@@ -42,7 +42,14 @@ namespace BuildWebAPPFromConsole
                 options.Password.RequireLowercase = false;
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequireUppercase = false;
+            }); 
+            
+            services.ConfigureApplicationCookie(config =>
+            {
+                config.LoginPath = _configuration["Application:LoginPath"];
             });
+
+
             //AddMVC() vs AddControllersWithViews() vs AddControllers() vs AddRazorPages()
 
             //this method is used to add mvc in 3.0.1 version there are some more methods see commented below
@@ -96,7 +103,7 @@ namespace BuildWebAPPFromConsole
             app.UseRouting();
 
             app.UseAuthentication();
-            //app.UseAuthorization();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints=> {
 
