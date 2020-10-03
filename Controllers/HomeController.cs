@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BuildWebAPPFromConsole.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 
@@ -17,9 +18,11 @@ namespace BuildWebAPPFromConsole.Controllers
         }
         public ViewResult Index()
         {
-            var sectionNewBookAlert = _configuration.GetSection("NewBookAlert");
-            bool result = sectionNewBookAlert.GetValue<bool>("DisplayNewBookAlert");
-            string bookName = sectionNewBookAlert.GetValue<string>("BookName");
+            var newBookAlert = new NewBookAlertConfig();
+            _configuration.Bind("NewBookAlert", newBookAlert);
+            //var sectionNewBookAlert = _configuration.GetSection("NewBookAlert");
+            //bool result = sectionNewBookAlert.GetValue<bool>("DisplayNewBookAlert");
+            //string bookName = sectionNewBookAlert.GetValue<string>("BookName");
 
             return View();
         }
