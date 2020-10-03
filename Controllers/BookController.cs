@@ -46,7 +46,6 @@ namespace BuildWebAPPFromConsole.Controllers
         {
             var model = new BookModel() ;
 
-            ViewBag.Language = new SelectList(await _languageRepository.GetLanguages(),"Id","Name");
             ViewBag.IsSuccess = isSuccess;
             ViewBag.BookId = bookId;
 
@@ -56,7 +55,6 @@ namespace BuildWebAPPFromConsole.Controllers
         [HttpPost]
         public async Task<IActionResult> AddNewBook(BookModel bookModel)
         {
-            ViewBag.Language = new SelectList(await _languageRepository.GetLanguages(), "Id", "Name");
 
             if (ModelState.IsValid)
             {
