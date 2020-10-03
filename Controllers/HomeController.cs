@@ -17,8 +17,9 @@ namespace BuildWebAPPFromConsole.Controllers
         }
         public ViewResult Index()
         {
-            bool result = _configuration.GetValue<bool>("NewBookAlert:DisplayNewBookAlert");
-            string bookName = _configuration.GetValue<string>("NewBookAlert:BookName");
+            var sectionNewBookAlert = _configuration.GetSection("NewBookAlert");
+            bool result = sectionNewBookAlert.GetValue<bool>("DisplayNewBookAlert");
+            string bookName = sectionNewBookAlert.GetValue<string>("BookName");
 
             return View();
         }
