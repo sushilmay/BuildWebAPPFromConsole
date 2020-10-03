@@ -13,11 +13,19 @@ namespace BuildWebAPPFromConsole.Controllers
     {
         private readonly IConfiguration _configuration;
 
+        //Work as AddSingleton
         public readonly NewBookAlertConfig _newBookAlertConfig;
-        public HomeController(IConfiguration configuration, IOptions<NewBookAlertConfig> configurationNewBookAlert)
+
+        //Work as AddScope 
+        public readonly NewBookAlertConfig _newBookAlertConfigSnapshot;
+
+        public HomeController(IConfiguration configuration, IOptions<NewBookAlertConfig> configurationNewBookAlert,
+            IOptionsSnapshot<NewBookAlertConfig> configurationNewBookAlertSnapshot
+            )
         {
             _configuration = configuration;
             _newBookAlertConfig = configurationNewBookAlert.Value;
+            _newBookAlertConfigSnapshot = configurationNewBookAlertSnapshot.Value;
         }
 
 
