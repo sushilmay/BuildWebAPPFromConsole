@@ -4,6 +4,7 @@ using BuildWebAPPFromConsole.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,7 +30,9 @@ namespace BuildWebAPPFromConsole
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<BookStoreContext>(options=> options.UseSqlServer(_configuration.GetConnectionString("DefaultConnection")));
-            
+
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<BookStoreContext>();
             //AddMVC() vs AddControllersWithViews() vs AddControllers() vs AddRazorPages()
 
             //this method is used to add mvc in 3.0.1 version there are some more methods see commented below
@@ -80,6 +83,9 @@ namespace BuildWebAPPFromConsole
                 RequestPath= "/MyStaticFiles"
             }); ;
             app.UseRouting();
+
+            app.UseAuthentication();
+            //app.UseAuthorization();
 
             app.UseEndpoints(endpoints=> {
 

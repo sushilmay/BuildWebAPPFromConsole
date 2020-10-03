@@ -42,7 +42,7 @@ namespace BuildWebAPPFromConsole.Controllers
         {
             return _bookRepository.SearchBook(bookName, authorName);
         }
-        public async Task<ViewResult> AddNewBook(bool isSuccess = false, int bookId = 0)
+        public ViewResult AddNewBook(bool isSuccess = false, int bookId = 0)
         {
             var model = new BookModel() ;
 
