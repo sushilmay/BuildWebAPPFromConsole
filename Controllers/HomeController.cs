@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BuildWebAPPFromConsole.Model;
+using BuildWebAPPFromConsole.Repository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
@@ -19,18 +20,25 @@ namespace BuildWebAPPFromConsole.Controllers
         //Work as AddScope 
         public readonly NewBookAlertConfig _newBookAlertConfigSnapshot;
 
-        public HomeController(IConfiguration configuration, IOptions<NewBookAlertConfig> configurationNewBookAlert,
-            IOptionsSnapshot<NewBookAlertConfig> configurationNewBookAlertSnapshot
-            )
+
+        private readonly IMessageRepository _messageRepository;
+        public HomeController(
+            IConfiguration configuration, 
+            IOptions<NewBookAlertConfig> configurationNewBookAlert,
+            IOptionsSnapshot<NewBookAlertConfig> configurationNewBookAlertSnapshot,
+            IMessageRepository messageRepository)
         {
             _configuration = configuration;
             _newBookAlertConfig = configurationNewBookAlert.Value;
-            _newBookAlertConfigSnapshot = configurationNewBookAlertSnapshot.Value;
+            _newBookAlertConfigSnapshot = configurationNewBookAlertSnapshot.Value; 
+            _messageRepository = messageRepository;
         }
 
 
         public ViewResult Index()
         {
+            var value = _messageRepository.GetName();
+
             var newBookAlert = new NewBookAlertConfig();
             _configuration.Bind("NewBookAlert", newBookAlert);
             //var sectionNewBookAlert = _configuration.GetSection("NewBookAlert");
