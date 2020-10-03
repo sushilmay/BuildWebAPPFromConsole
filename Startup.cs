@@ -31,7 +31,7 @@ namespace BuildWebAPPFromConsole
         {
             services.AddDbContext<BookStoreContext>(options=> options.UseSqlServer(_configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddIdentity<IdentityUser, IdentityRole>()
+            services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<BookStoreContext>();
             //AddMVC() vs AddControllersWithViews() vs AddControllers() vs AddRazorPages()
 

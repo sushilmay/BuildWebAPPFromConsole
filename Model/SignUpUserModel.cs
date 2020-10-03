@@ -8,6 +8,11 @@ namespace BuildWebAPPFromConsole.Model
 {
     public class SignUpUserModel
     {
+        [Required(ErrorMessage = "Please enter your first name")]
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+
+
         [Required(ErrorMessage = "Please enter your email")]
         [Display(Name = "Email address")]
         [EmailAddress(ErrorMessage = "Please enter a valid email")]
