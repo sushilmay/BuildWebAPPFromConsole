@@ -45,8 +45,11 @@ namespace BuildWebAPPFromConsole
             services.AddRazorPages().AddRazorRuntimeCompilation()
                 .AddViewOptions(option=> {option.HtmlHelperOptions.ClientValidationEnabled = false; });// Uncomment this code to disable client side validations.
 #endif
-            services.AddScoped<BookRepository, BookRepository>();
-            services.AddScoped<LanguageRepository, LanguageRepository>();
+            //1.AddScoped for each Http Request object will be created and used that in that life cycle
+            //2.AddSingleton create instance at once only
+            //3.AddTransient every time new instastance will be created for all requests
+            services.AddScoped<IBookRepository, BookRepository>();
+            services.AddScoped<ILanguageRepository, LanguageRepository>();
 
 
         }

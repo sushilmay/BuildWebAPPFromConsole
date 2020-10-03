@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace BuildWebAPPFromConsole.Repository
 {
-    public class BookRepository
+    public class BookRepository : IBookRepository
     {
-        private readonly BookStoreContext _context=null;
+        private readonly BookStoreContext _context = null;
         public BookRepository(BookStoreContext context)
         {
             _context = context;
@@ -27,7 +27,7 @@ namespace BuildWebAPPFromConsole.Repository
                 LanguageId = model.LanguageId,
                 TotalPages = model.TotalPages.HasValue ? model.TotalPages.Value : 0,
                 UpdatedOn = DateTime.UtcNow,
-                CoverImageUrl=model.CoverImageUrl,
+                CoverImageUrl = model.CoverImageUrl,
                 BookPdfUrl = model.BookPdfUrl
             };
             newBook.bookGallery = new List<BookGallery>();
@@ -58,7 +58,7 @@ namespace BuildWebAPPFromConsole.Repository
                                   Language = book.Language.Name,
                                   Title = book.Title,
                                   TotalPages = book.TotalPages,
-                                  CoverImageUrl=book.CoverImageUrl,
+                                  CoverImageUrl = book.CoverImageUrl,
                                   BookPdfUrl = book.BookPdfUrl,
                                   Gallery = book.bookGallery.Select(g => new GalleryModel()
                                   {
@@ -83,7 +83,7 @@ namespace BuildWebAPPFromConsole.Repository
                      Language = book.Language.Name,
                      Title = book.Title,
                      TotalPages = book.TotalPages,
-                     CoverImageUrl=book.CoverImageUrl,
+                     CoverImageUrl = book.CoverImageUrl,
                      BookPdfUrl = book.BookPdfUrl,
                      Gallery = book.bookGallery.Select(g => new GalleryModel()
                      {
