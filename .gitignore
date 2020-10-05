@@ -343,3 +343,5 @@ healthchecksdb
 /wwwroot/jquery-validation-unobtrusive
 /wwwroot/books/cover
 /wwwroot/books/gallery
+/.config
+/Properties/ServiceDependencies/crangerweb - Web Deploy

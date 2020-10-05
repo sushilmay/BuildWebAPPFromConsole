@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UserSecretsId>7ad76459-1995-4e48-9a60-e813888a598f</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Database\" />
     <Folder Include="wwwroot\books\cover\" />
     <Folder Include="wwwroot\books\gallery\" />
     <Folder Include="wwwroot\books\pdf\" />
