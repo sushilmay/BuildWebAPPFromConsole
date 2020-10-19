@@ -1,0 +1,59 @@
+Task<List<Person>> peopleTask = resp.Get();
+peopleTask.Result if we use this ui main thread will wait for it to complete, so we can use ContinueWith
+
+peopleTask.ContinueWith(delegate PopulateListBox(Task<List<Person>> t){
+List<Person> peoples=t.Result;
+
+if we will bind this list with UI control that it will give error becuase bg thread can not modiffiy UI thred
+
+});
+
+ContinueWith method has 40 overloads so we can use UI thhread problem with TaskScheduler.FromCurrentSynchronizationContext() inside this function
+
+peopleTask.ContinueWith(delegate PopulateListBox(Task<List<Person>> t){
+List<Person> peoples=t.Result;
+},TaskScheduler.FromCurrentSynchronizationContext());
+
+We can chnage this more simpler via await. await paused the current method untill Task is complete
+looks like a blocking operation
+Does not block current thred
+
+List<Person> peopleTask = await resp.Get();
+
+When multiple tasks run then ContinueWith could use give more control like cancelation token and exception handling scenario
+
+peopleTask.ContinueWith(t=>{List<Person> peoples=t.Result;},
+CancelationToken.None,
+TaskContinuationOptions.OnlyOnRunOnCompletion
+TaskScheduler.FromCurrentSynchronizationContext());
+
+peopleTask.ContinueWith(t=>{
+//here AggregationException may come from multiple tasks like  a tree structure so need to flatten all exception
+foreach(var ex in t.Exception.Flatten().InnerExceptions)
+},
+CancelationToken.None,
+TaskContinuationOptions.OnlyOnFailure
+TaskScheduler.FromCurrentSynchronizationContext());
+
+
+peopleTask.ContinueWith(t=>{
+//will work like finnaly
+},
+TaskScheduler.FromCurrentSynchronizationContext());
+
+
+Shot form in one block
+
+peopleTask.ContinueWith(t=>{
+
+if(t.Status.RanToCompletion){
+List<Person> peoples=t.Result;
+}
+if(t.Status.Faulted)
+{
+foreach(var ex in t.Exception.Flatten().InnerExceptions)
+}
+
+},
+TaskScheduler.FromCurrentSynchronizationContext());
+

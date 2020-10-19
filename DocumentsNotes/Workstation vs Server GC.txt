@@ -1,0 +1,82 @@
+https://devblogs.microsoft.com/premier-developer/understanding-different-gc-modes-with-concurrency-visualizer
+Workstation GC==>
+============= 
+desktop applications, GC will happen more frequently but with shorter pauses(less time duration pause) in application threads
+
+vs. Server GC==>
+=============
+Web applications, Server GC is optimized for application throughput in favor of longer GC pauses(longer time duration pause)
+Memory consumption will be higher, but application can process greater volume of data without triggering garbage collection
+
+
+The size of the segment varies depending on whether a system is 32- or 64-bit, and on the type of the garbage collector.
+Workstation GC uses has smaller segments and Server GC uses bigger segment.Smaller the segments are more frequently GC will occur.
+Default sizes of the ephemeral segment.
+Workstation/server GC	        32-bit	64-bit
+--------------------------------------------------
+Workstation GC	                16 MB	256 MB
+Server GC	                64 MB	4 GB
+Server GC with > 4 logical CPUs	32 MB	2 GB
+Server GC with > 8 logical CPUs	16 MB	1 GB
+
+One segment for (called the ephemeral/shortterm segment) = GEN0 & GEN1
+Many segments for GEN2 and large object heap(reside in GEN2 and seprate segment)
+
+GC has flavors like ‘concurrent’(or background) or ‘non-concurrent’.
+-Concurrent mode reduces the overall time spent in GC because the mark phase for 2nd generation happens in dedicated/seprated thread in 
+ parallel with application threads.
+-In this mode, GC suspends user threads for shorter amount of time but will use slightly more memory
+
+Workstation non-concurrent GC: Application thread allocates an object and GC can’t fulfill the request. GC is started.
+1. CLR suspends all managed threads.
+2. CLR collects the garbage in the thread that triggered the GC.
+3. CLR resumes all application threads once GC is done.
+
+Workstation concurrent mode GC: In concurrent (or background) mode, the CLR creates a dedicated high-priority thread for Gen2 collection. 
+In this case, the first phase of the garbage collection, mark phase, is happening in parallel with application threads.
+During this phase the application is still running, so user threads can allocate new objects and even trigger GC for young generations.
+
+Server GC
+---------
+1. Server GC is using bigger segments (few times bigger than for workstation GC).
+2. The CLR creates 1 managed heap per core. This means that for an 8 core machine, the CLR will allocate 8 distinct managed heaps.
+3. GC happens in dedicated threads: one thread per managed heap.
+
+Server GC trades memory in favor of throughput. Larger heaps mean that memory saturation happens less frequently, but once it happens, the 
+CLR needs to do more work to traverse the heap. As a result, the application consumes more memory and GC will happen less frequently, but 
+every GC will take longer period of time even for collecting Gen0 and Gen1
+
+To speed up the GC CLR is uses a dedicated high priority thread even for Gen0 & Gen1 collection. 
+In the case of background GC the CLR will create yet another set of threads (one per core) for background analysis. 
+Managed applications with background server GC will use 16 additional threads for an 8 core machine!
+
+Background Server GC:Application thread allocates an object and GC can’t fulfill the request. GC is started.
+1 CLR suspends all managed threads.
+2 CLR collects Gen0 and Gen1 in dedicated GC worker threads.
+3 CLR suspends GC worker threads and starts background collection. All the managed threads are resumed.
+4 Background threads mark all reachable objects in memory and suspend application threads for sweep or compact phase.
+5 CLR resumes GC worker threads to sweep the heap.
+6 Application threads wait for GC to finish.
+
+The following screenshots shows the 3 groups of threads:
+· First 4 threads are foreground GC threads responsible for collecting its own heap.
+· Second 4 threads are application worker threads.
+· Last 4 threads are dedicated for background GC.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
