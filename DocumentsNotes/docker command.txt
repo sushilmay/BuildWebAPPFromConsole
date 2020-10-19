@@ -1,0 +1,90 @@
+sudo docker images 
+sudo docker container ls OR sudo docker ps
+sudo doker stop <conatinerid>
+
+//here t for tage name
+//--tag , -t		
+//Name and optionally a tag in the ‘name:tag’ format
+//This example specifies that the PATH is ., and so all the files in the local directory get tard and sent to the Docker daemon
+sudo docker build -t dotnetapp . 
+OR 
+sudo docker build -t dotnetapp:V1 .
+
+sudo docker run -d -p 5000:5000 dotnetapp
+
+
+/////////////////publish conatiner on azure doker registry/////////////////////
+Install the Azure command line interface
+
+curl -sL https://packages.microsoft.com/keys/microsoft.asc | \
+    gpg --dearmor | \
+    sudo tee /etc/apt/trusted.gpg.d/microsoft.asc.gpg > /dev/null
+
+AZ_REPO=$(lsb_release -cs)
+echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ $AZ_REPO main" | \
+    sudo tee /etc/apt/sources.list.d/azure-cli.list
+
+sudo apt-get update
+
+sudo apt-get install azure-cli
+
+sudo az login
+
+sudo az acr login --name containerregdev007
+
+sudo docker tag dotnetapp containerregdev007.azurecr.io/dotnetapp
+
+sudo docker push containerregdev007.azurecr.io/dotnetapp
+////////////////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////Creating K8S Cluster on Azure///////////////////////////////
+// Here we will create a new resource group
+az group create --name kubernetesgrp --location centralindia
+
+// Then we will create a new Kubernetes cluster
+az aks create --resource-group kubernetesgrp --name democluster --node-count 1 --enable-addons monitoring --generate-ssh-keys
+
+// We will then install the kubectl tool
+az aks install-cli --install-location=./kubectl
+
+// This allows kubectl to connect to the Kubernetes cluster
+az aks get-credentials --resource-group kubernetesgrp --name democluster 
+/////////////////////////////////////////////////////////////////////////////////////////////
+uplaod deployment(app.yml) and service file (in service file add loadbalncer to communicate with the container)
+kubectl apply -f app.yml
+
+kubectl apply -f service.yml
+
+kubectl get service nginx-service --watch
+
+kubectl delete services nginx-service
+
+kubectl delete deployment nginx-deployment
+
+cubectl get all (show all deployment and services)
+
+
+Service Principle help us to communicate b/w services in Azure like we have k8s cluster and Azure Repository for images. either we create a user 
+then access those servcie OR we use service principle that being created at the time of K8S Cluster
+
+$AKS_RESOURCE_GROUP="kubernetesgrp"
+$AKS_CLUSTER_NAME="democluster"
+$ACR_RESOURCE_GROUP="lineuxvmrg"
+$ACR_NAME="containerregdev007"
+
+
+$CLIENT_ID=$(az aks show --resource-group $AKS_RESOURCE_GROUP --name $AKS_CLUSTER_NAME --query "servicePrincipalProfile.clientId" --output tsv)
+
+$ACR_ID=$(az acr show --name $ACR_NAME --resource-group $ACR_RESOURCE_GROUP --query "id" --output tsv)
+
+az role assignment create --assignee $CLIENT_ID --role acrpull --scope $ACR_ID
+
+rm app.yml //remove the yml file
+
+kubectl apply -f app.yml
+
+kubectl apply -f service.yml
+
+kubectl get service my-service --watch
+
+///////////////////////////////////////////////////////////////////////////////////////

@@ -1,0 +1,181 @@
+=================== Start Custom Middleware===================
+Configure all middelware(is http pipeline) here via use(),next() and map() method.
+order of middleware is vary important
+MapGet only use get request where Map may use get put and post etc.
+
+           //use() method is used a new custom request pipeline, next() method is used to execute next pipeline.
+           //if next()method is not used that will be consider as end of pipe line
+            app.Use(async (context, next) => {
+                await context.Response.WriteAsync("\nCustom 1 middleware");
+                await next(); 
+                await context.Response.WriteAsync("\nResponse Custom 1 middleware");
+
+            });
+
+                //Map() method is used for map a reource to a particular route
+                endpoints.MapGet("/", async context =>
+                {
+                    await context.Response.WriteAsync("Running Web Server");
+                });
+========================End Custom Middleware=======================
+
+=================== Start env variable============================
+            //here env variable read it form launchSetting.json file and as we know launchsetting only used for development
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+========================End Custom Middleware=======================
+
+=========================Configure MVC OR Web API application========
+            //this method is used to add mvc in 3.0.1 version there are some more methods see commented below
+            //services.AddMvc();
+
+            //like for web api may use this one
+            //services.AddControllers();  
+
+
+            services.AddControllersWithViews();
+
+
+            app.UseEndpoints(endpoints=> {
+                endpoints.MapDefaultControllerRoute();
+            });
+
+// For MVC inherit by Controller for Web API Controller hinherit by BaseController class
+========================End Configure MVC OR Web API application=======================
+=================================Start Static files (Img, css & js) in asp.net core==============
+Add wwwroot folder
+
+CASE1             app.UseStaticFiles();
+       OR
+CASE2            app.UseStaticFiles(new StaticFileOptions() {
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory() , "MyStaticFiles")),
+                RequestPath= "/MyStaticFiles"
+            });
+
+
+    <!--We have to the configure middleware UseStaticFiles  then only it will show the images from wwwroot folder-->
+    <img src="~/images/logo.png" alt="logo" style="width:100px;height:100px;"/> CASE 1
+
+    <img src="../MyStaticFiles/logo.png" alt="logo1" style="width:100px;height:100px;"/> CASE2
+=================================End Static files (Img, css & js) in asp.net core================
+=======================Start How to install & use client side library (jQuery & Bootstrap)========
+Can use "Add Client Side Library" option of VS, it will cretae a libman.json file
+
+=======================End How to install & use client side library (jQuery & Bootstrap)==========
+
+=========================Start Razor file compilation in asp.net core =========================
+To avoid the recompilation in debug mode can configure this it will behave just linke angular
+
+#if DEBUG
+            services.AddRazorPages().AddRazorRuntimeCompilation();
+#endif
+=========================End Razor file compilation in asp.net core ===========================
+
+===================Strat RenderSection & Section in Asp.Net Core=============================
+After Jquery load all the Jquery code should be run , we can create the section is pages and those section can be added in Layout Page
+_Layout.cshtml= <script src="~/lib/jquery/jquery.js"></script>
+                 @RenderSection("script",required:false);
+
+Index.cshtml = 
+@section script{ 
+@*<script src="~/lib/jquery/jquery.js"></script>*@
+<script>
+    $(document).ready(function () {
+        alert('hi');
+    });
+</script>
+}
+===================End RenderSection & Section in Asp.Net Core===============================
+
+=====================Start _ViewStart.cshtml & _ViewImports.cshtml file======================
+Use _ViewStart file to set differner layout page and move it that code in this file for DRY
+
+_ViewImports file is used to use these directives
+@using BuildWebAPPFromConsole.Model;
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, BuildWebAPPFromConsole //this is for custom tag helper
+
+    @using
+    @model
+    @addTagHelper
+    @removeTagHelper
+    @tagHelperPrefix
+    @inherits
+    @inject
+  
+=====================End _ViewStart.cshtml & _ViewImports.cshtml file========================
+
+=========================Start Tag Helper==========================
+1 Anchor:
+=======
+<a class="nav-link text-dark" asp-controller="Home" asp-action="Index">Home</a>
+
+<a asp-route="bookDetailsRoute" asp-route-id="@book.Id" class="btn btn-sm btn-outline-secondary">View details</a>
+
+[Route("book-details/{id}", Name = "bookDetailsRoute")]
+public ViewResult GetBook(int id)
+
+
+2 Image tag helper
+=================
+<!--A unique cache-busting string is appended as a query parameter to the image source-->
+<img src="~/images/logo.png" width="30" height="30" asp-append-version="true" />
+
+3 Environment tag
+===================
+
+    <environment include="Development, QA">
+        <link rel="stylesheet"
+              href="http://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+              asp-fallback-href="~/lib/twitter-bootstrap/css/bootstrap.min.css"
+              asp-fallback-test-class="sr-only"
+              asp-fallback-test-property="position"
+              asp-fallback-test-value="absolute"
+              integrity=""
+              crossorigin="anonymous">
+    </environment>
+    <environment exclude="Development">
+        <link href="~/lib/twitter-bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    </environment>
+=========================End Tag Helper==========================
+
+public IFormFile CoverPhoto { get; set; 
+ string serverFolder = Path.Combine(_webHostEnvironment.WebRootPath, folder);
+
+                    await bookModel.CoverPhoto.CopyToAsync(new FileStream(serverFolder, FileMode.Create))
+
+
+<partial name="_bookThumbnail" model="@book" />
+
+
+
+View Componnet just like weidg and can be result any where, 
+Create Componnet folder and Componnet folder inside  Views/Shared and then Create folder for component name TopBooks and Default.cshtml  pages
+In Componnet folder create a new class
+ public class TopBooksViewComponent : ViewComponent
+{
+ public async Task<IViewComponentResult> InvokeAsync(int count)
+        {
+            var books = await _bookRepository.GetTopBooksAsync(count);
+            return View(books);
+        }
+}
+
+USE
+await Component.InvokeAsync("TopBooks", new { count = 3 })
+OR
+<vc:top-books count="5"></vc:top-books>
+
+
+===================================================Start DI Configure===================================
+         //1.AddScoped for each Http Request object will be created and used that in that life cycle
+            //2.AddSingleton create instance at once only
+            //3.AddTransient every time new instastance will be created for all requests
+
+
+Inside View
+@inject BuildWebAPPFromConsole.Repository.ILanguageRepository _languageRepo
+
+===================================================End DI Configure===================================
